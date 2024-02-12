@@ -1,8 +1,20 @@
+import React from 'react';
+
 const Sort = () => {
+  const list = ['популярности', 'цене', 'алфавиту'];
+
+  const [isSortVisible, setIsSortVisible] = React.useState(false);
+  const [activeCategory, setActiveCategory] = React.useState(0);
+
+  const onClickCategory = (i) => {
+    setActiveCategory(i);
+    setIsSortVisible(false);
+  };
+
   return (
     <>
       <div className="sort">
-        <div className="sort__label">
+        <div className="sort__label" onClick={() => setIsSortVisible((prev) => !prev)}>
           <svg
             width="10"
             height="6"
@@ -15,15 +27,22 @@ const Sort = () => {
             />
           </svg>
           <b>Сортировка по:</b>
-          <span>популярности</span>
+          <span>{list[activeCategory]}</span>
         </div>
-        <div className="sort__popup">
-          <ul>
-            <li className="active">популярности</li>
-            <li>цене</li>
-            <li>алфавиту</li>
-          </ul>
-        </div>
+        {isSortVisible && (
+          <div className="sort__popup">
+            <ul>
+              {list.map((item, i) => (
+                <li
+                  key={i}
+                  onClick={() => onClickCategory(i)}
+                  className={i === activeCategory ? 'active' : ''}>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </>
   );
