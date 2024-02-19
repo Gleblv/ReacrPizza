@@ -3,6 +3,9 @@
 .categories {
   ul {
     display: flex;
+    flex-wrap: wrap;
+    row-gap: 10px;
+    margin-right: 20px;
 
     li {
       background-color: #f9f9f9;
@@ -25,6 +28,28 @@
       &.active {
         background-color: #282828;
         color: #fff;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    ul {
+      margin-right: 0;
+      justify-content: space-between;
+    }
+  }
+
+  @media (max-width: 580px) {
+    width: 100%;
+
+    ul {
+      width: 100%;
+      flex-direction: column;
+
+      li {
+        margin-right: 0;
+        width: 100%;
+        text-align: center;
       }
     }
   }

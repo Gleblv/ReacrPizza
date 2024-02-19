@@ -14,6 +14,8 @@ const Home = () => {
       .then((res) => res.json())
       .then((data) => setPizzasList(data))
       .then((_) => setPizzasIsLodaing(false));
+
+    window.scrollTo(0, 0);
   }, []);
 
   return (
