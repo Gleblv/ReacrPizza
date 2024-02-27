@@ -1,0 +1,29 @@
+.root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 15px;
+
+  li {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 1px solid #fe5f1e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    a {
+      color: #fe5f1e;
+    }
+
+    &:hover {
+      background-color: #fe5f1e;
+
+      a {
+        color: #ffffff;
+      }
+    }
+  }
+}
