@@ -9,18 +9,22 @@ import NotFound from './pages/404';
 
 import './scss/app.scss';
 
+export const appContext = React.createContext('');
+
 function App() {
   const [searchValue, setSearchValue] = React.useState('');
 
   return (
-    <div className="wrapper">
-      <Header searchValue={searchValue} setSearchValue={(value) => setSearchValue(value)} />
-      <Routes>
-        <Route index path="/" element={<Home searchValue={searchValue} />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </div>
+    <appContext.Provider value={{ searchValue, setSearchValue }}>
+      <div className="wrapper">
+        <Header />
+        <Routes>
+          <Route index path="/" element={<Home />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
+    </appContext.Provider>
   );
 }
 

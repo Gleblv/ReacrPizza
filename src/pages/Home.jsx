@@ -1,17 +1,21 @@
 import React from 'react';
 
+import { appContext } from '../App';
+
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 
-const Home = ({ searchValue }) => {
+const Home = () => {
   const [pizzasList, setPizzasList] = React.useState([]);
   const [pizzasIsLodaing, setPizzasIsLodaing] = React.useState(true);
   const [activeCategory, setActiveCategory] = React.useState(0);
   const [activeSort, setActiveSort] = React.useState({ name: 'популярности', index: 'rating' });
   const [pageNumber, setPageNumber] = React.useState(1);
+
+  const { searchValue } = React.useContext(appContext);
 
   React.useEffect(() => {
     const categoryType = activeCategory > 0 ? `category=${activeCategory}` : '';

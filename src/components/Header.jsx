@@ -4,7 +4,7 @@ import Search from './Search';
 
 import logo from '../assets/img/pizza-logo.svg';
 
-const Header = ({ searchValue, setSearchValue }) => {
+const Header = () => {
   return (
     <>
       <div className="header">
@@ -18,7 +18,7 @@ const Header = ({ searchValue, setSearchValue }) => {
               </div>
             </div>
           </Link>
-          <Search searchValue={searchValue} setSearchValue={(value) => setSearchValue(value)} />
+          <Search />
           <Link to="/cart">
             <div className="header__cart">
               <a href="/cart.html" className="button button--cart">
