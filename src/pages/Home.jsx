@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import { appContext } from '../App';
 
@@ -9,10 +10,10 @@ import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 
 const Home = () => {
+  const { activeCategory, activeSort } = useSelector((state) => state.filter);
+
   const [pizzasList, setPizzasList] = React.useState([]);
   const [pizzasIsLodaing, setPizzasIsLodaing] = React.useState(true);
-  const [activeCategory, setActiveCategory] = React.useState(0);
-  const [activeSort, setActiveSort] = React.useState({ name: 'популярности', index: 'rating' });
   const [pageNumber, setPageNumber] = React.useState(1);
 
   const { searchValue } = React.useContext(appContext);
@@ -42,11 +43,8 @@ const Home = () => {
       <div className="content">
         <div className="container">
           <div className="content__top">
-            <Categories
-              activeCategory={activeCategory}
-              onClickCategoty={(i) => setActiveCategory(i)}
-            />
-            <Sort activeSort={activeSort} onClickSort={(obj) => setActiveSort(obj)} />
+            <Categories />
+            <Sort />
           </div>
           <h2 className="content__title">Все пиццы</h2>
           <div className="content__items">
