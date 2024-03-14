@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 import { appContext } from '../App';
 
@@ -10,33 +11,35 @@ import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 
 const Home = () => {
-  const { activeCategory, activeSort } = useSelector((state) => state.filter);
+  const { activeCategoryId, activeSort, currnetPage } = useSelector((state) => state.filter);
 
   const [pizzasList, setPizzasList] = React.useState([]);
   const [pizzasIsLodaing, setPizzasIsLodaing] = React.useState(true);
-  const [pageNumber, setPageNumber] = React.useState(1);
+  // const [pageNumber, setPageNumber] = React.useState(1);
 
   const { searchValue } = React.useContext(appContext);
 
   React.useEffect(() => {
-    const categoryType = activeCategory > 0 ? `category=${activeCategory}` : '';
+    const categoryType = activeCategoryId > 0 ? `category=${activeCategoryId}` : '';
     const filtredSortString = activeSort.index.replace('-', '');
     const filtredType = activeSort.index.includes('-') ? 'asc' : 'desc';
     const search = searchValue ? `&search=${searchValue}` : '';
 
     setPizzasIsLodaing(true);
 
-    fetch(
-      `https://65cbe753efec34d9ed8840df.mockapi.io/items?page=${pageNumber}&limit=4&${categoryType}&sortBy=${filtredSortString}&order=${filtredType}${search}`,
-    )
-      .then((res) => res.json())
+    axios
+      .get(
+        `https://65cbe753efec34d9ed8840df.mockapi.io/items?page=${currnetPage}&limit=4&${categoryType}&sortBy=${filtredSortString}&order=${filtredType}${search}`,
+      )
+      .then((res) => res.data)
       .then((data) => {
-        return typeof data == 'object' && setPizzasList(data);
+        setPizzasList(data);
+        setPizzasIsLodaing(false);
       })
-      .then((_) => setPizzasIsLodaing(false));
+      .catch((err) => console.log(err));
 
     window.scrollTo(0, 0);
-  }, [activeCategory, activeSort, searchValue, pageNumber]);
+  }, [activeCategoryId, activeSort, searchValue, currnetPage]);
 
   return (
     <>
@@ -52,7 +55,7 @@ const Home = () => {
               ? [...new Array(4)].map((_, i) => <Skeleton key={i} />)
               : pizzasList && pizzasList.map((obj, i) => <PizzaBlock key={i} {...obj} />)}
           </div>
-          <Pagination setPageNumber={(number) => setPageNumber(number)} />
+          <Pagination />
         </div>
       </div>
     </>

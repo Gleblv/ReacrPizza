@@ -1,22 +1,46 @@
 import React from 'react';
+import debounce from 'lodash.debounce';
 
 import { appContext } from '../../App';
 
 import styles from './Search.module.scss';
 
 const Search = () => {
-  const { searchValue, setSearchValue } = React.useContext(appContext);
+  const { setSearchValue } = React.useContext(appContext);
+
+  const [value, setValue] = React.useState('');
+
+  const inputRef = React.useRef();
+
+  const onClickClear = () => {
+    setSearchValue('');
+    inputRef.current.focus();
+  };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const updateSearchValue = React.useCallback(
+    debounce((value) => {
+      setSearchValue(value);
+    }, 500),
+    [],
+  );
+
+  const onChangeValue = (e) => {
+    setValue(e.target.value);
+    updateSearchValue(value);
+  };
 
   return (
     <div className={styles.searchInput}>
       <input
-        onChange={(e) => setSearchValue(e.target.value)}
-        value={searchValue}
+        ref={inputRef}
+        onChange={(e) => onChangeValue(e)}
+        value={value}
         type="text"
         placeholder="Поиск"
       />
-      {searchValue && (
-        <div onClick={() => setSearchValue('')} className={styles.icon}>
+      {value && (
+        <div onClick={onClickClear} className={styles.icon}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             x="0px"
