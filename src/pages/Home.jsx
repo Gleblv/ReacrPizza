@@ -1,8 +1,12 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import qs from 'qs';
 
 import { appContext } from '../App';
+import { list } from '../components/Sort';
+import { setFiltersParams } from '../redux/slices/filterSlice';
 
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
@@ -11,15 +15,20 @@ import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 
 const Home = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const { activeCategoryId, activeSort, currnetPage } = useSelector((state) => state.filter);
 
   const [pizzasList, setPizzasList] = React.useState([]);
   const [pizzasIsLodaing, setPizzasIsLodaing] = React.useState(true);
-  // const [pageNumber, setPageNumber] = React.useState(1);
+
+  const isSearched = useRef(false);
+  const isFirstRender = useRef(true);
 
   const { searchValue } = React.useContext(appContext);
 
-  React.useEffect(() => {
+  const fetchData = () => {
     const categoryType = activeCategoryId > 0 ? `category=${activeCategoryId}` : '';
     const filtredSortString = activeSort.index.replace('-', '');
     const filtredType = activeSort.index.includes('-') ? 'asc' : 'desc';
@@ -39,7 +48,48 @@ const Home = () => {
       .catch((err) => console.log(err));
 
     window.scrollTo(0, 0);
+  };
+
+  // Если был первый рендер то проверяем параметры и сохраняем в Redux
+  React.useEffect(() => {
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1));
+
+      dispatch(
+        setFiltersParams({
+          activeCategoryId: params.activeCategoryId,
+          currnetPage: params.currnetPage,
+          activeSort: list.find((obj) => obj.index === params.filtredType),
+        }),
+      );
+
+      isSearched.current = true;
+    }
+  }, []);
+
+  // Если был первый рендер то запрашиваем пиццы
+  React.useEffect(() => {
+    if (!isSearched.current) {
+      fetchData();
+    }
+
+    isSearched.current = false;
   }, [activeCategoryId, activeSort, searchValue, currnetPage]);
+
+  // Если изменили параметры и был первый рендер
+  React.useEffect(() => {
+    if (!isFirstRender.current) {
+      const query = qs.stringify({
+        activeCategoryId,
+        filtredType: activeSort.index,
+        currnetPage,
+      });
+
+      navigate(`?${query}`);
+    }
+
+    isFirstRender.current = false;
+  }, [activeCategoryId, activeSort, currnetPage]);
 
   return (
     <>
