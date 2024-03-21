@@ -19,6 +19,22 @@ const Sort = () => {
 
   const [isSortVisible, setIsSortVisible] = React.useState(false);
 
+  const sortRef = React.useRef();
+
+  React.useEffect(() => {
+    const onClickOutsideSort = (e) => {
+      if (!e.composedPath().includes(sortRef.current)) {
+        setIsSortVisible(false);
+      }
+    };
+
+    document.body.addEventListener('click', onClickOutsideSort);
+
+    return () => {
+      document.body.removeEventListener('click', onClickOutsideSort);
+    };
+  }, []);
+
   const onClickCategory = (obj) => {
     dispatch(setSorting(obj));
     setIsSortVisible(false);
@@ -26,7 +42,7 @@ const Sort = () => {
 
   return (
     <>
-      <div className="sort">
+      <div className="sort" ref={sortRef}>
         <div className="sort__label" onClick={() => setIsSortVisible((prev) => !prev)}>
           <svg
             width="10"
