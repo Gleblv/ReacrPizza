@@ -4,11 +4,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import { clearPizzas } from '../redux/slices/cartSlice';
 
 import CartPizza from '../components/cartPizza';
+import CartEmpty from '../components/CartEmpty';
 
 const Cart = () => {
   const dispatch = useDispatch();
 
   const { cartPizzasList, totalPrice } = useSelector((state) => state.cart);
+
+  if (!totalPrice) {
+    return <CartEmpty />;
+  }
 
   return (
     <>

@@ -13,7 +13,9 @@ const CartPizza = ({ id, title, imageUrl, count, price, type, size }) => {
         </div>
         <div className="cart__item-info">
           <h3>{title}</h3>
-          <p>{type} тесто, 26 см.</p>
+          <p>
+            {type} тесто, {size} см.
+          </p>
         </div>
         <div className="cart__item-count">
           <div
