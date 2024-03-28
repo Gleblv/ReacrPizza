@@ -7,6 +7,7 @@ import qs from 'qs';
 import { appContext } from '../App';
 import { list } from '../components/Sort';
 import { setFiltersParams } from '../redux/slices/filterSlice';
+import { setItems, fetchPizzas } from '../redux/slices/pizzasSlice';
 
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
@@ -19,33 +20,32 @@ const Home = () => {
   const dispatch = useDispatch();
 
   const { activeCategoryId, activeSort, currnetPage } = useSelector((state) => state.filter);
+  const { items, status } = useSelector((state) => state.pizzas);
 
-  const [pizzasList, setPizzasList] = React.useState([]);
-  const [pizzasIsLodaing, setPizzasIsLodaing] = React.useState(true);
+  // const [pizzasIsLodaing, setPizzasIsLodaing] = React.useState(true);
 
   const isSearched = useRef(false);
   const isFirstRender = useRef(true);
 
   const { searchValue } = React.useContext(appContext);
 
-  const fetchData = () => {
+  const fetchData = async () => {
     const categoryType = activeCategoryId > 0 ? `category=${activeCategoryId}` : '';
     const filtredSortString = activeSort.index.replace('-', '');
     const filtredType = activeSort.index.includes('-') ? 'asc' : 'desc';
     const search = searchValue ? `&search=${searchValue}` : '';
 
-    setPizzasIsLodaing(true);
+    // setPizzasIsLodaing(true);
 
-    axios
-      .get(
-        `https://65cbe753efec34d9ed8840df.mockapi.io/items?page=${currnetPage}&limit=4&${categoryType}&sortBy=${filtredSortString}&order=${filtredType}${search}`,
-      )
-      .then((res) => res.data)
-      .then((data) => {
-        setPizzasList(data);
-        setPizzasIsLodaing(false);
-      })
-      .catch((err) => console.log(err));
+    dispatch(
+      fetchPizzas({
+        categoryType,
+        filtredSortString,
+        filtredType,
+        search,
+        currnetPage,
+      }),
+    );
 
     window.scrollTo(0, 0);
   };
@@ -100,11 +100,20 @@ const Home = () => {
             <Sort />
           </div>
           <h2 className="content__title">Все пиццы</h2>
-          <div className="content__items">
-            {pizzasIsLodaing
-              ? [...new Array(4)].map((_, i) => <Skeleton key={i} />)
-              : pizzasList && pizzasList.map((obj, i) => <PizzaBlock key={i} {...obj} />)}
-          </div>
+          {status === 'error' ? (
+            <div class="content__error">
+              <h2>
+                Произошла ошибка <icon>😕</icon>
+              </h2>
+              <p>К сожалению не удалось получить питсы. Попробуйте повторить попытку позже.</p>
+            </div>
+          ) : (
+            <div className="content__items">
+              {status === 'loading'
+                ? [...new Array(4)].map((_, i) => <Skeleton key={i} />)
+                : items && items.map((obj, i) => <PizzaBlock key={i} {...obj} />)}
+            </div>
+          )}
           <Pagination />
         </div>
       </div>
