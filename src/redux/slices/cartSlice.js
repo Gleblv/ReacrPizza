@@ -60,6 +60,10 @@ const cartSlice = createSlice({
   },
 });
 
+export const selectCart = (state) => state.cart;
+export const selectCartItemById = (id) => (state) =>
+  state.cart.cartPizzasList.find((obj) => obj.id === id);
+
 export const { addPizza, deletePizza, clearPizzas, substractPizza } = cartSlice.actions;
 
 export default cartSlice.reducer;

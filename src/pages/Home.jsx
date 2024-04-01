@@ -1,13 +1,11 @@
 import React, { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import qs from 'qs';
 
-import { appContext } from '../App';
 import { list } from '../components/Sort';
-import { setFiltersParams } from '../redux/slices/filterSlice';
-import { setItems, fetchPizzas } from '../redux/slices/pizzasSlice';
+import { selectFilter, setFiltersParams } from '../redux/slices/filterSlice';
+import { fetchPizzas, selectPizzas } from '../redux/slices/pizzasSlice';
 
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
@@ -19,15 +17,11 @@ const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { activeCategoryId, activeSort, currnetPage } = useSelector((state) => state.filter);
-  const { items, status } = useSelector((state) => state.pizzas);
-
-  // const [pizzasIsLodaing, setPizzasIsLodaing] = React.useState(true);
+  const { activeCategoryId, activeSort, currnetPage, searchValue } = useSelector(selectFilter);
+  const { items, status } = useSelector(selectPizzas);
 
   const isSearched = useRef(false);
   const isFirstRender = useRef(true);
-
-  const { searchValue } = React.useContext(appContext);
 
   const fetchData = async () => {
     const categoryType = activeCategoryId > 0 ? `category=${activeCategoryId}` : '';
