@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import qs from 'qs';
 
 import { list } from '../components/Sort';
@@ -105,7 +105,12 @@ const Home = () => {
             <div className="content__items">
               {status === 'loading'
                 ? [...new Array(4)].map((_, i) => <Skeleton key={i} />)
-                : items && items.map((obj, i) => <PizzaBlock key={i} {...obj} />)}
+                : items &&
+                  items.map((obj, i) => (
+                    <Link key={i} to={`/pizzas/${obj.id}`}>
+                      <PizzaBlock {...obj} />
+                    </Link>
+                  ))}
             </div>
           )}
           <Pagination />
