@@ -2,10 +2,14 @@ import React from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
-const PizzaDetail = () => {
+const PizzaDetail: React.FC = () => {
   const { id } = useParams();
 
-  const [pizzaData, setPizzaData] = React.useState();
+  const [pizzaData, setPizzaData] = React.useState<{
+    imageUrl: string;
+    title: string;
+    price: number;
+  }>();
 
   React.useEffect(() => {
     axios

@@ -3,17 +3,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import qs from 'qs';
 
-import { list } from '../components/Sort';
-import { selectFilter, setFiltersParams } from '../redux/slices/filterSlice';
-import { fetchPizzas, selectPizzas } from '../redux/slices/pizzasSlice';
+import { list } from '../components/Sort.js';
+import { selectFilter, setFiltersParams } from '../redux/slices/filterSlice.js';
+import { fetchPizzas, selectPizzas } from '../redux/slices/pizzasSlice.js';
 
-import Categories from '../components/Categories';
-import Sort from '../components/Sort';
-import PizzaBlock from '../components/PizzaBlock';
-import Skeleton from '../components/PizzaBlock/Skeleton';
-import Pagination from '../components/Pagination';
+import Categories from '../components/Categories.js';
+import Sort from '../components/Sort.js';
+import PizzaBlock from '../components/PizzaBlock/index.js';
+import Skeleton from '../components/PizzaBlock/Skeleton.js';
+import Pagination from '../components/Pagination/index.js';
 
-const Home = () => {
+const Home: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -32,6 +32,7 @@ const Home = () => {
     // setPizzasIsLodaing(true);
 
     dispatch(
+      // @ts-ignore
       fetchPizzas({
         categoryType,
         filtredSortString,
@@ -95,9 +96,9 @@ const Home = () => {
           </div>
           <h2 className="content__title">Все пиццы</h2>
           {status === 'error' ? (
-            <div class="content__error">
+            <div className="content__error">
               <h2>
-                Произошла ошибка <icon>😕</icon>
+                Произошла ошибка <span>😕</span>
               </h2>
               <p>К сожалению не удалось получить питсы. Попробуйте повторить попытку позже.</p>
             </div>
@@ -106,7 +107,7 @@ const Home = () => {
               {status === 'loading'
                 ? [...new Array(4)].map((_, i) => <Skeleton key={i} />)
                 : items &&
-                  items.map((obj, i) => (
+                  items.map((obj: any, i: any) => (
                     <Link key={i} to={`/pizzas/${obj.id}`}>
                       <PizzaBlock {...obj} />
                     </Link>

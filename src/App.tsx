@@ -5,7 +5,7 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import NotFound from './pages/404';
-import PizzaDetail from './pages/PizzaDetail';
+import PizzaDetail from './pages/PizzaDetail.tsx';
 import MainTemplate from './templates/MainTemplate';
 
 import './scss/app.scss';

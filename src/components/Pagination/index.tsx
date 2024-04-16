@@ -5,10 +5,10 @@ import { setCurrentPage } from '../../redux/slices/filterSlice';
 
 import styles from './Pagination.module.scss';
 
-const Pagination = () => {
+const Pagination: React.FC = () => {
   const dispatch = useDispatch();
 
-  const { currnetPage } = useSelector((state) => state.filter);
+  const { currnetPage } = useSelector((state: any) => state.filter);
 
   return (
     <>
