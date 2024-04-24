@@ -1,21 +1,24 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import qs from 'qs';
 
-import { list } from '../components/Sort.js';
-import { selectFilter, setFiltersParams } from '../redux/slices/filterSlice.js';
-import { fetchPizzas, selectPizzas } from '../redux/slices/pizzasSlice.js';
+import { useAppDispatch } from '../redux/store';
 
-import Categories from '../components/Categories.js';
-import Sort from '../components/Sort.js';
-import PizzaBlock from '../components/PizzaBlock/index.js';
-import Skeleton from '../components/PizzaBlock/Skeleton.js';
-import Pagination from '../components/Pagination/index.js';
+import { SortListItem, list } from '../components/Sort';
+import { selectFilter, setFiltersParams } from '../redux/slices/filterSlice';
+import { fetchPizzas, selectPizzas } from '../redux/slices/pizzasSlice';
+
+import Categories from '../components/Categories';
+import Sort from '../components/Sort';
+import PizzaBlock from '../components/PizzaBlock/index';
+import Skeleton from '../components/PizzaBlock/Skeleton';
+import Pagination from '../components/Pagination/index';
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { activeCategoryId, activeSort, currnetPage, searchValue } = useSelector(selectFilter);
   const { items, status } = useSelector(selectPizzas);
@@ -32,7 +35,6 @@ const Home: React.FC = () => {
     // setPizzasIsLodaing(true);
 
     dispatch(
-      // @ts-ignore
       fetchPizzas({
         categoryType,
         filtredSortString,
@@ -52,9 +54,10 @@ const Home: React.FC = () => {
 
       dispatch(
         setFiltersParams({
-          activeCategoryId: params.activeCategoryId,
-          currnetPage: params.currnetPage,
-          activeSort: list.find((obj) => obj.index === params.filtredType),
+          searchValue: params.search as string,
+          activeCategoryId: Number(params.categoryType),
+          currnetPage: Number(params.currnetPage),
+          activeSort: list.find((obj) => obj.index === params.filtredType) as SortListItem,
         }),
       );
 

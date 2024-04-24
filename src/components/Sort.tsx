@@ -3,18 +3,27 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { selectFilterActiveSort, setSorting } from '../redux/slices/filterSlice';
 
-type SortListItem = {
+export enum SortItemIndexEnum {
+  RatingAsc = 'rating',
+  RatingDesc = '-rating',
+  PriceAsc = 'price',
+  PriceDesc = '-price',
+  TitleAsc = 'title',
+  TitleDesc = '-title',
+}
+
+export type SortListItem = {
   name: string;
-  index: string;
+  index: SortItemIndexEnum;
 };
 
 export const list: SortListItem[] = [
-  { name: 'популярности (по убыванию)', index: 'rating' },
-  { name: 'популярности (по возрастанию)', index: '-rating' },
-  { name: 'цене (по убыванию)', index: 'price' },
-  { name: 'цене (по возрастанию)', index: '-price' },
-  { name: 'алфавиту (по убыванию)', index: 'title' },
-  { name: 'алфавиту (по возрастанию)', index: '-title' },
+  { name: 'популярности (по убыванию)', index: SortItemIndexEnum.RatingAsc },
+  { name: 'популярности (по возрастанию)', index: SortItemIndexEnum.RatingDesc },
+  { name: 'цене (по убыванию)', index: SortItemIndexEnum.PriceAsc },
+  { name: 'цене (по возрастанию)', index: SortItemIndexEnum.PriceDesc },
+  { name: 'алфавиту (по убыванию)', index: SortItemIndexEnum.TitleAsc },
+  { name: 'алфавиту (по возрастанию)', index: SortItemIndexEnum.TitleDesc },
 ];
 
 const Sort = () => {
@@ -27,8 +36,8 @@ const Sort = () => {
   const sortRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
-    const onClickOutsideSort = (e: any) => {
-      if (!e.composedPath().includes(sortRef.current)) {
+    const onClickOutsideSort = (e: MouseEvent) => {
+      if (sortRef.current && !e.composedPath().includes(sortRef.current)) {
         setIsSortVisible(false);
       }
     };
@@ -66,7 +75,7 @@ const Sort = () => {
         {isSortVisible && (
           <div className="sort__popup">
             <ul>
-              {list.map((obj, i) => (
+              {list.map((obj: SortListItem, i: number) => (
                 <li
                   key={i}
                   onClick={() => onClickCategory(obj)}

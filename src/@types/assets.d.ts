@@ -9,6 +9,6 @@ declare module '*.png' {
 }
 
 declare module '*.scss' {
-  const content: string;
+  const content: any;
   export default content;
 }

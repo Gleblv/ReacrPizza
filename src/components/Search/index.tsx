@@ -22,13 +22,13 @@ const Search: React.FC = () => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const updateSearchValue = React.useCallback(
-    debounce((value: any) => {
+    debounce((value: string) => {
       dispatch(setSearchValue(value));
     }, 500),
     [],
   );
 
-  const onChangeValue = (e: any) => {
+  const onChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
     updateSearchValue(value);
   };

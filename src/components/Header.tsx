@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import Search from './Search/index.tsx';
+import Search from './Search/index';
 
 import logo from '../assets/img/pizza-logo.svg';
 
@@ -60,7 +60,8 @@ const Header: React.FC = () => {
                     />
                   </svg>
                   <span>
-                    {cartPizzasList && cartPizzasList.reduce((sum, { count }) => count + sum, 0)}
+                    {cartPizzasList &&
+                      cartPizzasList.reduce((sum: any, { count }: any) => count + sum, 0)}
                   </span>
                 </a>
               )}

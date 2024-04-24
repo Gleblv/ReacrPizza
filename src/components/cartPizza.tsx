@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import { addPizza, substractPizza, deletePizza } from '../redux/slices/cartSlice';
+import { addPizza, substractPizza, deletePizza, CartItem } from '../redux/slices/cartSlice';
 
 type CartPizzaProps = {
   id: string;
@@ -52,7 +52,7 @@ const CartPizza: React.FC<CartPizzaProps> = ({ id, title, imageUrl, count, price
               dispatch(
                 addPizza({
                   id,
-                }),
+                } as CartItem),
               )
             }
             className="button button--outline button--circle cart__item-count-plus">
