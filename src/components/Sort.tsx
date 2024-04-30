@@ -26,7 +26,7 @@ export const list: SortListItem[] = [
   { name: 'алфавиту (по возрастанию)', index: SortItemIndexEnum.TitleDesc },
 ];
 
-const Sort = () => {
+const Sort: React.FC = () => {
   const dispatch = useDispatch();
 
   const activeSort = useSelector(selectFilterActiveSort);

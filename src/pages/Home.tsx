@@ -89,6 +89,14 @@ const Home: React.FC = () => {
     isFirstRender.current = false;
   }, [activeCategoryId, activeSort, currnetPage]);
 
+  const onClickCartBtn = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    const target = e.target as HTMLAnchorElement;
+
+    if (target.classList.contains('button')) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <>
       <div className="content">
@@ -111,7 +119,7 @@ const Home: React.FC = () => {
                 ? [...new Array(4)].map((_, i) => <Skeleton key={i} />)
                 : items &&
                   items.map((obj: any, i: any) => (
-                    <Link key={i} to={`/pizzas/${obj.id}`}>
+                    <Link onClick={(e) => onClickCartBtn(e)} key={i} to={`/pizzas/${obj.id}`}>
                       <PizzaBlock {...obj} />
                     </Link>
                   ))}

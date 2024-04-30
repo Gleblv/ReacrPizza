@@ -12,6 +12,10 @@
   border: 1px solid transparent;
   @include noselect();
 
+  &.button--outline.button--add > * {
+    pointer-events: none;
+  }
+
   &,
   span {
     color: #fff;
