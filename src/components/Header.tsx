@@ -11,6 +11,20 @@ const Header: React.FC = () => {
 
   const { cartPizzasList, totalPrice } = useSelector((state: any) => state.cart);
 
+  const isFirstRender = React.useRef(true);
+
+  React.useEffect(() => {
+    if (!isFirstRender.current) {
+      const cartPizzasListJson = JSON.stringify(cartPizzasList);
+      const cartPriceJson = JSON.stringify(totalPrice);
+
+      localStorage.setItem('cartItems', cartPizzasListJson);
+      localStorage.setItem('cartPrice', cartPriceJson);
+    }
+
+    isFirstRender.current = false;
+  }, [cartPizzasList]);
+
   return (
     <>
       <div className="header">
